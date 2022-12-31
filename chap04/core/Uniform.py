@@ -3,10 +3,13 @@ from OpenGL.GL import *
 class Uniform(object):
 
     def __init__(self, program, variableName):
-        if ( program is None ) and ( variableName is None ):
+        if ( program is None ) or ( variableName is None ):
             return 
 
-        self.locateVariable(program, variableName)
+        self.dataType = 0
+        self.data = 0
+
+        self.locateUniform(program, variableName)
     
     @classmethod
     def fromData(cls, dataType, data):
@@ -22,7 +25,7 @@ class Uniform(object):
         uniform.uploadData()
         return uniform
 
-    def locateVariable(self, program, variableName):
+    def locateUniform(self, program, variableName):
         self.variableName = variableName
         self.variableRef = glGetUniformLocation(program, variableName)
 
@@ -32,7 +35,6 @@ class Uniform(object):
     def setData(self, dataType, data):
         self.dataType = dataType
         self.data = data
-
     
     def uploadData(self):
         if self.variableRef == -1:

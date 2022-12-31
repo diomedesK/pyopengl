@@ -25,6 +25,7 @@ class Base(object):
         self.timer = 0
         self.deltaTime = 0
         self.frameRate = FRAME_RATE
+        self.deltaTime = 1 / self.frameRate
 
     def initialize(self):
         pass
@@ -39,15 +40,10 @@ class Base(object):
 
         while self.running:
             self.input.update()
-
-            #clock.get_time() returns the number of miliseconds elapsed since the last ticks
-            # self.timer += self.clock.get_time() / 1000
-            self.deltaTime = self.clock.get_time() / 1000
-            self.timer +=  self.deltaTime 
+            self.timer +=  self.deltaTime
 
             self.update()
             pygame.display.flip()
             self.clock.tick(self.frameRate)
-
 
         pygame.quit()

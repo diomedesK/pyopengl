@@ -74,8 +74,8 @@ class Graphics(object):
                 open("./glsl/fragmentShader.glsl").read(),
                 )
 
-        self.VAO = glGenVertexArrays(1)
-        glBindVertexArray(self.VAO)
+        self.VAO_1 = glGenVertexArrays(1)
+        glBindVertexArray(self.VAO_1)
 
         # Vertex shader related
 
@@ -112,7 +112,6 @@ class Graphics(object):
         Uniform.quickUpload(self.program, "baseColor", "vec3", [1.0, 1.0, 1.0])
         Uniform.quickUpload(self.program, "useVertexColors", "bool", True)
         glUseProgram(0)
-
 
 
     def update(self):

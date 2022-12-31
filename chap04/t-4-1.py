@@ -123,6 +123,12 @@ class Graphics(object):
             if event.type == pygame.QUIT:
                 self.running = False
 
+            if event.type == pygame.MOUSEWHEEL:
+                z = event.y * 0.1
+                self.viewMatrix.data = self.viewMatrix.data @ Matrix.makeTranslation(0, 0, z)
+                self.viewMatrix.uploadData()
+                print(event.y)
+
         pass
     
     def run(self):
@@ -134,8 +140,7 @@ class Graphics(object):
             glUseProgram(self.program)
             self.handleInput()
 
-
-            rotation = self.deltaTime * 0.05
+            rotation = self.deltaTime * 0.5
             m = Matrix.makeRotationX(rotation) @ Matrix.makeRotationY(rotation * 0.9) @ Matrix.makeRotationZ(rotation * 0.8)
             self.modelMatrix.data = self.modelMatrix.data @ m
             self.modelMatrix.uploadData()

@@ -54,7 +54,8 @@ class Matrix:
         ]).astype(float)
     
     @staticmethod
-    def makeScale(s):
+    def makeScale(coefficient):
+        s = coefficient
         return numpy.array([
             [s, 0, 0, 0],
             [0, s, 0, 0],
@@ -63,7 +64,7 @@ class Matrix:
         ]).astype(float)
     
     @staticmethod
-    def makePerspective(angleOfView=60, aspectRatio=1, near=0.1, far=1000):
+    def makePerspective(angleOfView=60, aspectRatio=1.0, near=0.1, far=1000):
         a = angleOfView * pi/180.0
         d = 1.0 / tan(a/2)
         r = aspectRatio

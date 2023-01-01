@@ -9,11 +9,15 @@ class Input(object):
         self.keyUpList = []
         self.keyPressedList = []
 
+        self.mouseMotionEvent = None
+
     def update(self):
         self.keyDownList = []
         self.keyUpList = []
+        
 
         for event in pygame.event.get():
+
             if event.type == pygame.QUIT:
                 self.controller.running = False
             
@@ -26,6 +30,9 @@ class Input(object):
                 key_name =  (pygame.key.name(event.key)) 
                 self.keyUpList.append(key_name)
                 self.keyPressedList.remove(key_name)
+
+            if event.type == pygame.MOUSEMOTION:
+                self.mouseMotionEvent = event
     
     def isKeyDown(self, key_name):
         return key_name in self.keyDownList

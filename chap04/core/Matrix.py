@@ -54,7 +54,8 @@ class Matrix:
         ]).astype(float)
     
     @staticmethod
-    def makeScale(s):
+    def makeScale(size):
+        s = size
         return numpy.array([
             [s, 0, 0, 0],
             [0, s, 0, 0],

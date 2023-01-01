@@ -1,12 +1,16 @@
 from core.Base import Base
 from core.Mesh import Mesh
 from core.Matrix import Matrix
+from core.Renderer import Renderer
+from core.Camera import Camera
 
 from geometries.BoxGeometry import BoxGeometry
 from materials.surfaceMaterial import SurfaceMaterial
 
 from OpenGL.GL import *
-import numpy, inspect
+
+import pygame
+
 
 class Graphics(Base):
     """Render 3D objects in the screen"""
@@ -15,57 +19,78 @@ class Graphics(Base):
         super().__init__()
 
     def initialize(self):
-        glPointSize(10)
-        glLineWidth(5)
-        glEnable(GL_CULL_FACE)
-        # glPolygonMode(GL_FRONT_AND_BACK, GL_LINE)
-        glPolygonMode(GL_FRONT_AND_BACK, GL_FILL)
+        self.moveAmount = self.deltaTime * 1.5
+
+        self.renderer = Renderer()
+
+        self.camera = Camera(angleOfView=60)
+        self.camera.setPosition([0, 0, 4])
 
         geometry = BoxGeometry()
-        surface = SurfaceMaterial()
-
         geometry.countVertices()
 
-        self.worldMatrix = Matrix.makeTranslation(0, 0, 0)
-
+        surface = SurfaceMaterial()
         surface.addUniform("bool", "useBaseColorOnly", False)
-
-        surface.uniforms["projectionMatrix"].data = Matrix.makePerspective()
-        surface.uniforms["viewMatrix"].data = numpy.linalg.inv(self.worldMatrix) @ Matrix.makeTranslation(0, 0, -4)
-        surface.uniforms["modelMatrix"].data = Matrix.makeTranslation(0, 0, 0)
         surface.uniforms["useVertexColors"].data = True
+        surface.uniforms["projectionMatrix"].data = self.camera.projectionMatrix
 
-        # The line below does not in this case, because the above variables are already built-in in the Material class, 
-        # so when the Surface class calls locateUniforms at its end, they are located altogether. But it's a good practice
-        # to keep it
         surface.locateUniforms()
-
-        # geometry.attributes["vertexColor"].data = [0.5, 0.5, 0]
 
         self.mesh = Mesh(geometry, surface)
 
-    
     def update(self):
-        glClear( GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT ) #pyright: ignore
+        self.handleInput()
 
-        glUseProgram(self.mesh.material.program)
-        glBindVertexArray(self.mesh.VAO)
-        
-        for uniformName, uniformObject in self.mesh.material.uniforms.items():
-            uniformObject.uploadData()
-            pass
+        self.camera.updateViewMatrix()
+        self.renderer.render(self.mesh, self.camera)
 
-        for attributeName, attributeObject in self.mesh.geometry.attributes.items():
-            print(attributeName, attributeObject.data)
-            attributeObject.uploadData()
 
-        glDrawArrays( GL_TRIANGLES, 0, self.mesh.geometry.vertexCount )
-        # glDrawArrays( self.mesh.material.settings["drawStyle"], 0, self.mesh.geometry.vertexCount )
+        # if(self.timer > 3):
+        #     self.running = False
 
-        if(self.timer > 3):
-            self.running = False
 
-        pass
+    def handleInput(self):
+        for key in self.input.keyPressedList:
+
+            ## VIEW CAMERA TRANSLATIONS ##
+
+            if key == "w":
+                self.camera.translate(0, +self.moveAmount, 0, False)
+            if key == "s":
+                self.camera.translate(0, -self.moveAmount, 0, False)
+            if key == "a":
+                self.camera.translate(-self.moveAmount, 0, 0, False)
+            if key == "d":
+                self.camera.translate(+self.moveAmount, 0, 0, False)
+            if key == "q":
+                self.camera.translate(0, 0, +self.moveAmount, False)
+            if key == "e":
+                self.camera.translate(0, 0, -self.moveAmount, False)
+
+            # GLOBAL TRANSLATION TO THE OBJECT ##
+
+            if key == "up":
+                 self.mesh.translate(0, self.moveAmount, 0, useLocalCoordinates = False)
+            if key == "down":
+                self.mesh.translate(0, -self.moveAmount, 0, useLocalCoordinates = False)
+            if key == "left": 
+                self.mesh.translate(-self.moveAmount, 0, 0, useLocalCoordinates = False)
+            if key == "right":
+                 self.mesh.translate(self.moveAmount, 0, 0, useLocalCoordinates = False)
+
+        self.mesh.rotateX(self.deltaTime * 0.9)
+        self.mesh.rotateY(self.deltaTime * 0.9)
+
+        if any( x in self.input.keyPressedList for x in ["w", "a", "s", "d", "up", "down", "left", "right" ] ):
+            print("CAMERA X={:.2f}; Y={:.2f}; Z={:.2f} || GLOBAL TRANSOFRM X={:.2f}; Y={:.2f}; Z={:.2f} ".format(
+                  self.mesh.material.uniforms["viewMatrix"].data[0][3],
+                  self.mesh.material.uniforms["viewMatrix"].data[1][3],
+                  self.mesh.material.uniforms["viewMatrix"].data[2][3],
+                  self.mesh.transform[0][3],
+                  self.mesh.transform[1][3],
+                  self.mesh.transform[2][3]
+                ))
+
+
 
 Graphics().run()
-

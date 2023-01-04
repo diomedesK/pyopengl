@@ -5,9 +5,42 @@ class Object3D(object):
     def __init__(self):
         super(Object3D, self).__init__()
         self.parent = None
-        self.children = None
+        self.children = []
         self.transform = Matrix.makeIdentity()
+
+    def add(self, child):
+        self.children.append(child)
+        child.parent = self
     
+    def remove(self, child):
+        self.children.remove(child)
+        child.parent = None
+
+    def getDescendantsList(self):
+        descendants = []
+        nodesToProcess = [self]
+
+        while len(nodesToProcess) > 0:
+            node = nodesToProcess.pop(0)
+            descendants.append(node)
+
+            nodesToProcess = node.children + nodesToProcess
+
+        return descendants
+
+    def getWorldTransform(self): #not equal to a "getGlobalTransform"
+        if self.parent == None:
+            return self.transform
+        else:
+            return self.parent.getWorldTransform() @ self.transform
+
+    def getWorldPosition(self):
+        worldTransform = self.getWorldTransform()
+        return [
+                worldTransform.item((0, 3)),
+                worldTransform.item((1, 3)),
+                worldTransform.item((2, 3)),
+                ]
 
     def applyMatrix(self, matrix, useLocalCoordinates = True):
         if useLocalCoordinates:

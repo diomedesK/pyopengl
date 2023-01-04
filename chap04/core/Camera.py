@@ -12,5 +12,5 @@ class Camera(Object3D):
         self.projectionMatrix = Matrix.makePerspective(angleOfView, aspectRatio, near, far)
 
     def updateViewMatrix(self):
-        self.viewMatrix = numpy.linalg.inv(self.transform)
+        self.viewMatrix = numpy.linalg.inv(self.getWorldTransform())
         pass

@@ -1,4 +1,5 @@
 from core.Matrix import Matrix
+from core.Mesh import Mesh
 from OpenGL.GL import *
 
 import numpy, pygame
@@ -19,27 +20,34 @@ class Renderer(object):
         glPolygonMode(GL_FRONT_AND_BACK, GL_FILL)
         glClearColor(1, 1, 1, 1);
 
-
         glEnable(GL_BLEND)
         glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA) 
 
-    def render(self, mesh, camera):
+        self.meshFilter = lambda x : isinstance(x, Mesh)
+
+
+    def render(self, scene, camera, meshHandler):
         glClear( GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT ) #pyright: ignore
 
-        glUseProgram(mesh.material.program)
-        glBindVertexArray(mesh.VAO)
+        meshList = list(filter(self.meshFilter, scene.getDescendantsList()))
 
-        mesh.material.uniforms["viewMatrix"].data = camera.viewMatrix
-        mesh.material.uniforms["modelMatrix"].data = mesh.transform
-        
-        for uniformName, uniformObject in mesh.material.uniforms.items():
-            uniformObject.uploadData()
-            pass
+        for mesh in meshList:
+            meshHandler(mesh)
 
-        for attributeName, attributeObject in mesh.geometry.attributes.items():
-            attributeObject.uploadData()
+            glUseProgram(mesh.material.program)
 
-        glDrawArrays( GL_TRIANGLES, 0, mesh.geometry.vertexCount )
+            glBindVertexArray(mesh.VAO)
+            mesh.material.uniforms["viewMatrix"].data = camera.viewMatrix
+            mesh.material.uniforms["modelMatrix"].data = mesh.transform
+            
+            for uniformName, uniformObject in mesh.material.uniforms.items():
+                uniformObject.uploadData()
+                pass
 
-        # glDrawArrays( self.mesh.material.settings["drawStyle"], 0, self.mesh.geometry.vertexCount )
+            for attributeName, attributeObject in mesh.geometry.attributes.items():
+                attributeObject.uploadData()
+
+            glDrawArrays( GL_TRIANGLES, 0, mesh.geometry.vertexCount )
+            
+            #mesh.material.updateRenderSettings() 
 

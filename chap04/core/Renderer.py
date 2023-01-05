@@ -4,8 +4,7 @@ from OpenGL.GL import *
 
 import numpy, pygame
 
-
-
+debug = True
 
 class Renderer(object):
     """docstring for Renderer"""
@@ -18,7 +17,9 @@ class Renderer(object):
         glEnable(GL_CULL_FACE)
         glPolygonMode(GL_FRONT_AND_BACK, GL_LINE)
         glPolygonMode(GL_FRONT_AND_BACK, GL_FILL)
-        glClearColor(1, 1, 1, 1);
+
+        # glClearColor(1, 1, 1, 1); #white bg
+        glClearColor(0, 0, 0, 1); #black bg
 
         glEnable(GL_BLEND)
         glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA) 

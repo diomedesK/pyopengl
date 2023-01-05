@@ -45,6 +45,8 @@ class BasicMaterial(Material):
 
         self.addUniform( "vec3", "baseColor", [1.0, 1.0, 1.0])
         self.addUniform( "bool", "useVertexColors", False)
+        self.addUniform( "bool", "useBaseColorOnly", False)
+
 
         self.locateUniforms()
 

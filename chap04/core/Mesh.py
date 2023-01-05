@@ -7,8 +7,11 @@ class Mesh(Object3D):
     def __init__(self, geometry, material):
         super(Mesh, self).__init__()
 
+        self.id = ""
+
         self.geometry = geometry
         self.material = material
+
 
         self.VAO = glGenVertexArrays(1)
         glBindVertexArray(self.VAO)

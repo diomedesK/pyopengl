@@ -15,6 +15,10 @@ class Base(object):
 
         pygame.display.gl_set_attribute(pygame.GL_CONTEXT_PROFILE_MASK, pygame.GL_CONTEXT_PROFILE_CORE)
 
+        pygame.mouse.set_visible(True)
+        pygame.mouse.set_pos((400, 300))
+        pygame.event.set_grab(True)
+
         self.screen = pygame.display.set_mode( screenSize, displayFlags )
         pygame.display.set_caption("System32")
 

@@ -1,5 +1,10 @@
 import pygame
 
+MOUSE_MOTION = "mouseMotion"
+MOUSE_WHEEL = "mouseWheel"
+MOUSE_BUTTON_UP = "mouseButtonUp"
+MOUSE_BUTTON_DOWN = "mouseButtonDown"
+
 class Input(object):
 
     def __init__(self, controller):
@@ -9,7 +14,14 @@ class Input(object):
         self.keyUpList = []
         self.keyPressedList = []
 
-        self.mouseMotionEvent = None
+        self.mouseEvents = {}
+
+        self.onMouseMotion = lambda event : event
+        self.onMouseWheel = lambda event : event
+        self.onMouseButtonDown = lambda event : event
+        self.onMouseButtonUp = lambda event : event
+
+
 
     def update(self):
         self.keyDownList = []
@@ -17,6 +29,18 @@ class Input(object):
         
 
         for event in pygame.event.get():
+
+            if ( event.type == pygame.MOUSEMOTION ):
+                self.onMouseMotion(event)
+
+            if event.type == pygame.MOUSEWHEEL:
+                self.onMouseWheel(event)
+
+            if event.type == pygame.MOUSEBUTTONDOWN :
+                self.onMouseButtonDown(event)
+
+            if event.type == pygame.MOUSEBUTTONUP:
+                self.onMouseButtonUp(event)
 
             if event.type == pygame.QUIT:
                 self.controller.running = False
@@ -31,9 +55,6 @@ class Input(object):
                 self.keyUpList.append(key_name)
                 self.keyPressedList.remove(key_name)
 
-            if event.type == pygame.MOUSEMOTION:
-                self.mouseMotionEvent = event
-    
     def isKeyDown(self, key_name):
         return key_name in self.keyDownList
 

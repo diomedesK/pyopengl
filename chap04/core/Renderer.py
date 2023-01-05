@@ -29,6 +29,8 @@ class Renderer(object):
     def render(self, scene, camera, meshHandler):
         glClear( GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT ) #pyright: ignore
 
+        camera.updateViewMatrix()
+
         meshList = list(filter(self.meshFilter, scene.getDescendantsList()))
 
         for mesh in meshList:
@@ -37,6 +39,7 @@ class Renderer(object):
             glUseProgram(mesh.material.program)
 
             glBindVertexArray(mesh.VAO)
+            mesh.material.uniforms["projectionMatrix"].data = camera.projectionMatrix
             mesh.material.uniforms["viewMatrix"].data = camera.viewMatrix
             mesh.material.uniforms["modelMatrix"].data = mesh.transform
             
@@ -47,7 +50,7 @@ class Renderer(object):
             for attributeName, attributeObject in mesh.geometry.attributes.items():
                 attributeObject.uploadData()
 
-            glDrawArrays( GL_TRIANGLES, 0, mesh.geometry.vertexCount )
+            glDrawArrays( mesh.material.settings["drawStyle"], 0, mesh.geometry.vertexCount )
             
             #mesh.material.updateRenderSettings() 
 

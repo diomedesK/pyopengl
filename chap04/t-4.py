@@ -6,7 +6,7 @@ from core.Camera import Camera
 from core.Scene import Scene
 
 from geometries.BoxGeometry import BoxGeometry
-from materials.surfaceMaterial import SurfaceMaterial
+from materials.SurfaceMaterial import SurfaceMaterial
 
 from OpenGL.GL import *
 

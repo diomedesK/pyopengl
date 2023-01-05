@@ -4,7 +4,7 @@ class Object3D(object):
     """A node in the scene graph, with functions handling common usage"""
     def __init__(self):
         super(Object3D, self).__init__()
-        self.parent = None
+        self.parent = None 
         self.children = []
         self.transform = Matrix.makeIdentity()
 
@@ -47,7 +47,7 @@ class Object3D(object):
             self.transform = self.transform @ matrix
         else:
             self.transform = matrix @ self.transform 
-
+    
     def rotateX(self, angle, useLocalCoordinates = True):
         m = Matrix.makeRotationX(angle)
         self.applyMatrix(m, useLocalCoordinates)
@@ -62,7 +62,7 @@ class Object3D(object):
         m = Matrix.makeRotationZ(angle)
         self.applyMatrix(m, useLocalCoordinates)
         pass
-    
+
     def translate(self, x, y, z, useLocalCoordinates = True):
         m = Matrix.makeTranslation(x, y, z)
         self.applyMatrix(m, useLocalCoordinates)
@@ -70,7 +70,6 @@ class Object3D(object):
     def scale(self, size, useLocalCoordinates = True):
         m = Matrix.makeScale(size)
         self.applyMatrix(m, useLocalCoordinates)
-
 
     def getPosition(self):
         return [

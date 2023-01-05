@@ -49,4 +49,6 @@ class BasicMaterial(Material):
 
 
         self.locateUniforms()
-
+    
+    def updateRenderSettings(self):
+        pass

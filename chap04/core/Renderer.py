@@ -48,10 +48,7 @@ class Renderer(object):
                 uniformObject.uploadData()
                 pass
 
-            for attributeName, attributeObject in mesh.geometry.attributes.items():
-                attributeObject.uploadData()
+            mesh.material.updateRenderSettings()
 
             glDrawArrays( mesh.material.settings["drawStyle"], 0, mesh.geometry.vertexCount )
             
-            #mesh.material.updateRenderSettings() 
-

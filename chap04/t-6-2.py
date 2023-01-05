@@ -12,6 +12,8 @@ from materials.SurfaceMaterial import SurfaceMaterial
 from geometries.BoxGeometry import BoxGeometry
 
 from extras.MovementRig import MovementRig
+from extras.GridHelper import GridHelper
+from extras.AxesHelper import AxesHelper
 
 from OpenGL.GL import *
 
@@ -37,76 +39,12 @@ class Graphics(Base):
         self.rig.add(self.camera)
 
         ## INITIALIZE GRID PLANE ##
-        
-        gridDivisions, gridSize = 1000, 1000
-
-        gridUnitSize = gridSize / gridDivisions
-        glLineWidth(1)
-
-        gridDefaultColor = [1, 1, 1]
-
-        gridValues = []
-        gridPositionData = []
-        gridColorData = []
-
-        for n in range( gridDivisions + 1 ):
-            gridValues.append( -gridSize/2 + n * gridUnitSize )
-        
-
-        for x in gridValues:
-            gridPositionData.append([x, -gridSize/2, 0 ])
-            gridPositionData.append([x, +gridSize/2, 0 ])
-
-            gridColorData.append(gridDefaultColor)
-
-        for y in gridValues:
-            gridPositionData.append([-gridSize/2, y, 0 ])
-            gridPositionData.append([+gridSize/2, y, 0 ])
-
-            gridColorData.append(gridDefaultColor)
-
-        gridGeo = Geometry()
-        gridGeo.addAttribute("vec3", "vertexPosition", gridPositionData)
-        gridGeo.addAttribute("vec3", "vertexColor", gridColorData)
-        gridGeo.countVertices()
-
-        gridMat = BasicMaterial()
-        gridMat.settings["drawStyle"] = GL_LINES
-        gridMat.addUniform("bool", "useBaseColorOnly", True)
-        gridMat.locateUniforms()
-
-        self.gridMesh = Mesh(gridGeo, gridMat)
+        self.gridMesh = GridHelper(divisions=100, size=100)
         self.gridMesh.rotateX(-math.radians(90))
 
         ## INITIALIZE XYZ COORDINATES AT ORIGIN
-
-        coordGeo = Geometry()
-        coordMat = BasicMaterial()
-        
-        coordAxisLength = 2
-
-        coordPositions = [
-                [0, 0, 0], [coordAxisLength, 0, 0], 
-                [0, 0, 0], [0, coordAxisLength, 0], 
-                [0, 0, 0], [0, 0, coordAxisLength], 
-                ]
-
-        coordColors = [
-                [1, 0, 0], [1, 0, 0], 
-                [0, 1, 0], [0, 1, 0], 
-                [0, 0, 1], [0, 0, 1], 
-                ]
-
-        coordGeo.addAttribute("vec3", "vertexPosition", coordPositions)
-        coordGeo.addAttribute("vec3", "vertexColor", coordColors)
-        coordGeo.countVertices()
-
-        coordMat.settings["drawStyle"] = GL_LINES
-        coordMat.addUniform("bool", "useVertexColors", True)
-        coordMat.addUniform("bool", "useBaseColorOnly", False)
-        coordMat.locateUniforms()
-
-        self.coordMesh = Mesh(coordGeo, coordMat)
+    
+        self.coordMesh = AxesHelper(lineWidth=10)
 
         ## INITIALIZE BOX OBJECT ##
 
@@ -116,7 +54,6 @@ class Graphics(Base):
         boxMat.addUniform("bool", "useBaseColorOnly", False)
         boxMat.addUniform("bool", "useVertexColors", True)
         boxMat.locateUniforms()
-
 
         self.boxMesh = Mesh(boxGeo, boxMat)
         self.boxMesh.translate(2, 1.5, 2)

@@ -25,26 +25,26 @@ class Graphics(Base):
     """Render 3D objects in the screen"""
 
     def __init__(self):
-        super().__init__(screenSize=(682, 682))
+        super().__init__(screenSize=(1024, 1024))
 
     def initialize(self):
-        self.moveAmount = self.deltaTime * 1.5
+        self.moveAmount = self.deltaTime * 10
 
         self.renderer = Renderer()
         self.scene = Scene()
-        self.camera = Camera(angleOfView=60, far=50)
+        self.camera = Camera(angleOfView=60, far=1000)
         self.rig = MovementRig()
         
         self.camera.setPosition([0, 2, 8])
         self.rig.add(self.camera)
 
         ## INITIALIZE GRID PLANE ##
-        self.gridMesh = GridHelper(divisions=100, size=100)
+        self.gridMesh = GridHelper(divisions=500, size=500)
         self.gridMesh.rotateX(-math.radians(90))
 
         ## INITIALIZE XYZ COORDINATES AT ORIGIN
     
-        self.coordMesh = AxesHelper(lineWidth=10)
+        self.coordMesh = AxesHelper(axisLength=1000, lineWidth=5)
 
         ## INITIALIZE BOX OBJECT ##
 
@@ -70,7 +70,7 @@ class Graphics(Base):
         self.getTurnAmount = lambda coef : coef * math.radians( self.deltaTime * 8 )
         self.input.onMouseMotion = lambda event: (
                 self.camera.rotateY( self.getTurnAmount( -event.rel[0]) * 1),
-                self.camera.rotateX( self.getTurnAmount( -event.rel[1]) * 1)
+                self.camera.rotateX( self.getTurnAmount( -event.rel[1]) * 1),
                 )
 
 
@@ -78,22 +78,32 @@ class Graphics(Base):
         self.renderer.render(self.scene, self.camera, self.meshHandler)
         self.rig.update(self.input, self.moveAmount)
 
-
     def meshHandler(self, mesh):
-        for key in self.input.keyPressedList:
-            ## GLOBAL TRANSLATION TO THE OBJECT ##
-            if key == "up":
-                mesh.translate(0, self.moveAmount, 0 )
-            if key == "down":
-                mesh.translate(0, -self.moveAmount, 0 )
-            if key == "left": 
-                mesh.translate(-self.moveAmount, 0, 0 )
-            if key == "right":
-                mesh.translate(self.moveAmount, 0, 0 )
-
         if mesh.id == "box":
             mesh.rotateX(self.deltaTime * 0.9)
             mesh.rotateY(self.deltaTime * 0.9)
+
+            for key in self.input.keyPressedList:
+                ## GLOBAL TRANSLATION TO THE OBJECT ##
+                if key == "up":
+                    mesh.translate(0, self.moveAmount, 0, useLocalCoordinates = False)
+                if key == "down":
+                    mesh.translate(0, -self.moveAmount, 0, useLocalCoordinates = False )
+                if key == "left": 
+                    mesh.translate(-self.moveAmount, 0, 0, useLocalCoordinates = False )
+                if key == "right":
+                    mesh.translate(self.moveAmount, 0, 0, useLocalCoordinates = False )
+                if key == "z": 
+                    mesh.translate(0, 0, -self.moveAmount, useLocalCoordinates = False )
+                if key == "x":
+                    mesh.translate(0, 0, +self.moveAmount, useLocalCoordinates = False )
+
+
+        elif mesh.id == "plane":
+            mesh.rotateX(self.deltaTime * 0.9)
+            mesh.rotateY(self.deltaTime * 0.9)
+            mesh.rotateZ(self.deltaTime * 0.9)
+
 
 Graphics().run()
 # main()

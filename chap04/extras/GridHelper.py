@@ -4,7 +4,7 @@ from core.Geometry import Geometry
 from materials.BasicMaterial import BasicMaterial
 from materials.LineMaterial import LineMaterial
 
-from OpenGL.GL import GL_LINES
+from OpenGL.GL import *
 from math import radians
 
 class GridHelper(Mesh):
@@ -25,11 +25,13 @@ class GridHelper(Mesh):
             positionData.append([x, +size/2, 0 ])
 
             colorData.append(defaultColor)
+            colorData.append(defaultColor)
 
         for y in values:
             positionData.append([-size/2, y, 0 ])
             positionData.append([+size/2, y, 0 ])
 
+            colorData.append(defaultColor)
             colorData.append(defaultColor)
 
         geo = Geometry()
@@ -40,7 +42,8 @@ class GridHelper(Mesh):
         mat = LineMaterial()
         mat.settings["drawStyle"] = GL_LINES
         mat.settings["lineWidth"] = lineWidth
-        mat.addUniform("bool", "useBaseColorOnly", True)
+        mat.addUniform("bool", "useBaseColorOnly", False)
+        mat.addUniform("bool", "useVertexColors", True)
         mat.locateUniforms()
 
         super().__init__(geo, mat)

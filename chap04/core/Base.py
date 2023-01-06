@@ -17,7 +17,6 @@ class Base(object):
 
         pygame.mouse.set_visible(True)
         pygame.mouse.set_pos((400, 300))
-        pygame.event.set_grab(True)
 
         self.screen = pygame.display.set_mode( screenSize, displayFlags )
         pygame.display.set_caption("System32")
@@ -40,6 +39,8 @@ class Base(object):
     def run(self):
         #idk why but the line below wont work if there's no pygame window
         #prob i didnt get what linking really means in graphics context
+        pygame.event.set_grab(True)
+        pygame.mouse.set_visible(False)
         self.initialize() 
 
         while self.running:

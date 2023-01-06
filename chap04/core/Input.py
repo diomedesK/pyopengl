@@ -1,4 +1,4 @@
-import pygame
+import pygame, copy
 
 MOUSE_MOTION = "mouseMotion"
 MOUSE_WHEEL = "mouseWheel"
@@ -21,26 +21,37 @@ class Input(object):
         self.onMouseButtonDown = lambda event : event
         self.onMouseButtonUp = lambda event : event
 
-
+        self.__mouseEventsNull = {
+                MOUSE_MOTION        : None ,
+                MOUSE_WHEEL         : None ,
+                MOUSE_BUTTON_DOWN   : None ,
+                MOUSE_BUTTON_UP     : None 
+                }
+        self.mouseEvents = {}
 
     def update(self):
         self.keyDownList = []
         self.keyUpList = []
-        
+            
+        self.mouseEvents = copy.copy(self.__mouseEventsNull)
 
         for event in pygame.event.get():
 
             if ( event.type == pygame.MOUSEMOTION ):
                 self.onMouseMotion(event)
+                self.mouseEvents[MOUSE_MOTION] = event #pyright: ignore
 
             if event.type == pygame.MOUSEWHEEL:
                 self.onMouseWheel(event)
+                self.mouseEvents[MOUSE_WHEEL] = event #pyright: ignore
 
             if event.type == pygame.MOUSEBUTTONDOWN :
                 self.onMouseButtonDown(event)
+                self.mouseEvents[MOUSE_BUTTON_DOWN] = event #pyright: ignore
 
             if event.type == pygame.MOUSEBUTTONUP:
                 self.onMouseButtonUp(event)
+                self.mouseEvents[MOUSE_BUTTON_UP] = event #pyright: ignore
 
             if event.type == pygame.QUIT:
                 self.controller.running = False

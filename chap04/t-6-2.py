@@ -33,7 +33,7 @@ class Graphics(Base):
         self.renderer = Renderer()
         self.scene = Scene()
         self.camera = Camera(angleOfView=60, far=1000)
-        self.rig = MovementRig()
+        self.rig = MovementRig(self.deltaTime)
         
         self.camera.setPosition([0, 2, 8])
         self.rig.add(self.camera)
@@ -67,13 +67,6 @@ class Graphics(Base):
 
         ## Functions and anonymous functions
 
-        self.getTurnAmount = lambda coef : coef * math.radians( self.deltaTime * 8 )
-        self.input.onMouseMotion = lambda event: (
-                self.camera.rotateY( self.getTurnAmount( -event.rel[0]) * 1),
-                self.camera.rotateX( self.getTurnAmount( -event.rel[1]) * 1),
-                )
-
-
     def update(self):
         self.renderer.render(self.scene, self.camera, self.meshHandler)
         self.rig.update(self.input, self.moveAmount)
@@ -97,13 +90,6 @@ class Graphics(Base):
                     mesh.translate(0, 0, -self.moveAmount, useLocalCoordinates = False )
                 if key == "x":
                     mesh.translate(0, 0, +self.moveAmount, useLocalCoordinates = False )
-
-
-        elif mesh.id == "plane":
-            mesh.rotateX(self.deltaTime * 0.9)
-            mesh.rotateY(self.deltaTime * 0.9)
-            mesh.rotateZ(self.deltaTime * 0.9)
-
 
 Graphics().run()
 # main()

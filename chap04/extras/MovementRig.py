@@ -1,5 +1,6 @@
 from core.Object3D import Object3D
-import math 
+from core.Camera import Camera
+import pygame, math
 
 class MovementRig(Object3D):
     
@@ -9,46 +10,69 @@ class MovementRig(Object3D):
     # tldr; it works because the camera object is added as a child of the lookAttachment
 
     """Tools for manipulating the view"""
-    def __init__(self):
+    def __init__(self, drag = 1.0):
         super(MovementRig, self).__init__()
         
         self.lookAttachment = Object3D()
         self.children = [self.lookAttachment]
         self.lookAttachment.parent = self #pyright: ignore
+
+        self.cameraDescendant = None
+
+        self.getTurnAmount = lambda coef : coef * math.radians( drag * 8 )
+        self.onMouseMotion = lambda event, camera: (
+                camera.rotateY( self.getTurnAmount( -event.rel[0]) * 1),
+                camera.rotateX( self.getTurnAmount( -event.rel[1]) * 1),
+                )
+        self.onMouseWheel = lambda event, camera: {}
+        self.onMouseButtonUp = lambda event, camera: {}
+        self.onMouseButtonDown = lambda event, camera: {}
         
     def add(self, child):
         self.lookAttachment.add(child)
+
+        if isinstance(child, Camera):
+            self.cameraDescendant = child
 
     def remove(self, child):
         self.lookAttachment.remove(child)
 
     def update(self, inputObject, moveAmount):
 
-        camera = self.lookAttachment.children[0]
-        a = camera.transform.item( ( 0, 0 )) 
-        aa = camera.transform.item( ( 2, 2 )) 
+        if self.cameraDescendant == None:
+            return
 
-        b = camera.transform.item( ( 0, 2 ))
-        bb = camera.transform.item( ( 2, 0 ))
+        a = self.cameraDescendant.transform.item( ( 0, 0 )) 
+        b = self.cameraDescendant.transform.item( ( 0, 2 ))
+        deltaX, deltaZ = -math.copysign(b**2, b), +math.copysign(a**2, a),
+        
+        availableMouseEvents = list(filter( lambda e : e != None, inputObject.mouseEvents.values() ))
 
-        x_ = b**2 
-        z_ = a**2
+        for event in availableMouseEvents:
+            if ( event.type == pygame.MOUSEMOTION ):
+                self.onMouseMotion(event, self.cameraDescendant)
 
-        xx, zz = -math.copysign(x_, b), +math.copysign(z_, a),
+            if event.type == pygame.MOUSEWHEEL:
+                self.onMouseWheel(event, self.cameraDescendant)
+
+            if event.type == pygame.MOUSEBUTTONDOWN :
+                self.onMouseButtonDown(event, self.cameraDescendant )
+
+            if event.type == pygame.MOUSEBUTTONUP:
+                self.onMouseButtonUp(event, self.cameraDescendant)
+
 
         for key in inputObject.keyPressedList:
             ## VIEW CAMERA TRANSLATIONS ##
 
             if key == "w":
-                # self.lookAttachment.translate(0, 0, -moveAmount, False)
-                self.lookAttachment.translate(xx * moveAmount, 0, -zz * moveAmount, False)
+                self.lookAttachment.translate(deltaX * moveAmount, 0, -deltaZ * moveAmount, False)
             if key == "s":
-                # self.lookAttachment.translate(0, 0, +moveAmount, False)
-                self.lookAttachment.translate(-xx * moveAmount, 0, +zz * moveAmount, False)
+                self.lookAttachment.translate(-deltaX * moveAmount, 0, +deltaZ * moveAmount, False)
             if key == "a":
-                self.lookAttachment.translate(-zz * moveAmount, 0, -xx * moveAmount, False)
+                self.lookAttachment.translate(-deltaZ * moveAmount, 0, -deltaX * moveAmount, False)
             if key == "d":                              
-                self.lookAttachment.translate(+zz * moveAmount, 0, +xx * moveAmount, False)
+                self.lookAttachment.translate(+deltaZ * moveAmount, 0, +deltaX * moveAmount, False)
 
             if key == "q":
                 self.lookAttachment.translate(0, -moveAmount, 0, False)

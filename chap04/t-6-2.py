@@ -35,8 +35,8 @@ class Graphics(Base):
         self.camera = Camera(angleOfView=60, far=1000)
         self.rig = MovementRig(self.deltaTime)
         
-        self.camera.setPosition([0, 2, 8])
         self.rig.add(self.camera)
+        self.rig.setPosition([ 0, 2, 9 ])
 
         ## INITIALIZE GRID PLANE ##
         self.gridMesh = GridHelper(divisions=500, size=500)
@@ -65,11 +65,13 @@ class Graphics(Base):
         self.scene.add(self.coordMesh)
         self.scene.add(self.boxMesh)
 
+
         ## Functions and anonymous functions
 
     def update(self):
         self.renderer.render(self.scene, self.camera, self.meshHandler)
         self.rig.update(self.input, self.moveAmount)
+
 
     def meshHandler(self, mesh):
         if mesh.id == "box":

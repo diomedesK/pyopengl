@@ -11,20 +11,6 @@ class Camera(Object3D):
         self.viewMatrix = Matrix.makeIdentity()
         self.projectionMatrix = Matrix.makePerspective(angleOfView, aspectRatio, near, far)
 
-        self.angleX, self.angleY = 0, 0
-
     def updateViewMatrix(self):
         self.viewMatrix = numpy.linalg.inv(self.getWorldTransform())
-
-        pass
     
-    def rotateX(self, angle, useLocalCoordinates = True):
-        super(Camera, self).rotateX(angle, useLocalCoordinates)
-        self.angleY += angle
-
-        # print(angle)
-
-
-    def rotateY(self, angle, useLocalCoordinates = True):
-        super(Camera, self).rotateY(angle, useLocalCoordinates)
-        self.angleX += angle

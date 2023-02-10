@@ -30,7 +30,7 @@ class Uniform(object):
         self.variableRef = glGetUniformLocation(program, variableName)
 
         if self.variableRef == -1:
-            raise Exception(f"The uniform variable \"{variableName}\" does not exist in the given program.")
+            print(f"The uniform variable \"{variableName}\" does not exist in program {program}.")
 
     def setData(self, dataType, data):
         self.dataType = dataType

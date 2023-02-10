@@ -5,6 +5,7 @@ from core.Texture import Texture
 from core.Renderer import Renderer
 from core.Camera import Camera
 from core.RendererTarget import RenderTarget
+from core.PostProcessor import PostProcessor
 
 from extras.MovementRig import MovementRig
 
@@ -14,6 +15,9 @@ from geometries.SphereGeometry import SphereGeometry
 from geometries.BoxGeometry import BoxGeometry
 
 from materials.SurfaceMaterial import SurfaceMaterial
+
+from effects.TemplateEffect import TemplateEffect
+from effects.TintEffect import TintEffect
 
 import math
 
@@ -71,15 +75,17 @@ class Graphics(Base):
         self.scene.add(self.characterMesh)
         self.scene.add(self.rig)
 
+        self.postProcessor = PostProcessor(self.renderer, self.scene, self.camera)
+        self.postProcessor.addEffect(TintEffect())
+
+
     def update(self):
         self.rig.update(self.input, self.moveAmout)
-        self.renderer.render(self.scene, self.camera)
-        self.renderer.render(self.scene, self.skyCamera, renderTarget=self.virtualRenderingTarget)
 
         self.sphereMesh.rotateY(self.deltaTime)
-        
         self.characterMesh.setPosition( self.rig.getPosition() )
 
-        pass
+        self.postProcessor.render() # self.renderer.render(self.scene, self.camera)
+        self.renderer.render(self.scene, self.skyCamera, renderTarget=self.virtualRenderingTarget)
 
 Graphics(screenSize=[800, 600], lockMouse=True).run()

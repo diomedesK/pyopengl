@@ -62,7 +62,7 @@ class Graphics(Base):
         ## ADD OBJECTS TO BILLBOARDING SCENE
 
         labelGeo1 = RectangleGeometry(width=800, height=600, position=[0, 0], alignment=[0,0])
-        labelText1 = TextTexture("manda salve zoio", transparent=True, fontColor=[255, 255, 1])
+        labelText1 = TextTexture("MyBillboardingMessage", transparent=True, fontColor=[255, 255, 1], fontSize=16, imageWidth=900, imageHeight=900)
         labelMat1 = TextureMaterial(labelText1)
         label1 = Mesh(labelGeo1, labelMat1)
         

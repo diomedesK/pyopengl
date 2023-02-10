@@ -1,8 +1,10 @@
 from core.Material import Material
+from core.Uniform import Uniform
+
 from OpenGL.GL import *
 
 class TextureMaterial(Material):
-    """Create a texture surface"""
+    """Initialize a texture surface"""
     def __init__(self, texture, properties={}):
 
         vertexShaderCode = """

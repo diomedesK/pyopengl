@@ -29,15 +29,29 @@ class Uniform(object):
         self.variableName = variableName
         self.variableRef = glGetUniformLocation(program, variableName)
 
+        if self.dataType == 'Light':
+            self.variableRef = {
+                "lightType":    glGetUniformLocation(program, variableName + ".lightType"),
+                "color":        glGetUniformLocation(program, variableName + ".color"),
+                "direction":    glGetUniformLocation(program, variableName + ".direction"),
+                "position":     glGetUniformLocation(program, variableName + ".position"),
+                "attenuation":  glGetUniformLocation(program, variableName + ".attenuation"),
+            }
+        else:
+            self.variableRef = glGetUniformLocation(program, variableName)
+
         if self.variableRef == -1:
-            print(f"The uniform variable \"{variableName}\" does not exist in program {program}.")
+            print(f"WARNING\nThe uniform variable \"{variableName}\" does not exist in program {program}.")
 
     def setData(self, dataType, data):
         self.dataType = dataType
         self.data = data
     
     def uploadData(self):
+        # print(f"Uploading {self.dataType} data for {self.variableName}")
+
         if self.variableRef == -1:
+            print(self.variableName)
             return 
 
         data = self.data
@@ -61,3 +75,15 @@ class Uniform(object):
             glActiveTexture(GL_TEXTURE0 + textureUnitReference)
             glBindTexture(GL_TEXTURE_2D, textureObjectReference)
             glUniform1i(self.variableRef, textureUnitReference)
+        elif self.dataType == "Light":
+            direction = self.data.getDirection()
+            position = self.data.getPosition()
+
+            glUniform1i(self.variableRef["lightType"], self.data.lightType)
+            glUniform3f(self.variableRef["color"], *self.data.color)
+            glUniform3f(self.variableRef["direction"], *direction)
+            glUniform3f(self.variableRef["position"], *position)
+            glUniform3f(self.variableRef["attenuation"], *self.data.attenuation)
+
+        else:
+            print(f"Received unknown datatype for variable '{self.variableName}': {self.dataType} ")

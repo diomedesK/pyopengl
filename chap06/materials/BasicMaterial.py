@@ -47,7 +47,6 @@ class BasicMaterial(Material):
         self.addUniform( "bool", "useVertexColors", False)
         self.addUniform( "bool", "useBaseColorOnly", False)
 
-
         self.locateUniforms()
     
     def updateRenderSettings(self):

@@ -2,10 +2,11 @@ import numpy
 
 from core.Geometry import Geometry
 
-
 class ParametricGeometry(Geometry):
-    def __init__(self, uStart, uEnd, uResolution, 
-    vStart, vEnd, vResolution, surfaceFunction):
+    def __init__(self, 
+                 uStart, uEnd, uResolution, 
+                 vStart, vEnd, vResolution,
+                 surfaceFunction):
         super().__init__()
 
         #generate set of points on function
@@ -15,6 +16,7 @@ class ParametricGeometry(Geometry):
         positions = []
         uvs = []
 
+        # Vertex position related
         for uIndex in range(uResolution+1):
             vArray = []
             for vIndex in range(vResolution+1):
@@ -23,6 +25,7 @@ class ParametricGeometry(Geometry):
                 vArray.append(surfaceFunction(u, v))
             positions.append(vArray)
         
+        # Texture related
         for uIndex in range(uResolution+1):
             vArray = []
             for vIndex in range(vResolution+1):
@@ -31,15 +34,19 @@ class ParametricGeometry(Geometry):
                 vArray.append([u,v])
             uvs.append(vArray)
         
+        # Light related
         def calculateNormal(p0, p1, p2):
             v1 = numpy.array(p1) - numpy.array(p0)
             v2 = numpy.array(p2) - numpy.array(p0)
 
             normal = numpy.cross(v1, v2)
-            normal = normal / numpy.linalg.norm(normal)
+            denominator = numpy.linalg.norm(normal)
+            normal = ( normal / denominator ) if denominator != 0 else numpy.array([0, 0, 0])
+
             return normal
         
         vertexNormals = []
+
         for uIndex in range(uResolution+1):
             vArray = []
             for vIndex in range(vResolution+1):
@@ -53,7 +60,6 @@ class ParametricGeometry(Geometry):
                 vArray.append(normalVector)
             vertexNormals.append(vArray)
 
-        #store vertex data 
         positionData = []
         colorData = []
         uvData = []
@@ -108,4 +114,3 @@ class ParametricGeometry(Geometry):
         self.addAttribute("vec2", "vertexUV", uvData)
         self.countVertices()
 
-   

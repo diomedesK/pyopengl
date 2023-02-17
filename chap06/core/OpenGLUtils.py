@@ -3,8 +3,12 @@ from OpenGL.GL import *
 class OpenGLUtils(object):
 
     @staticmethod
-    def __compileShader(code, kind):
+    def __compileShader(code, kind, printCode = False):
         code = '#version 330 \n' + code
+        
+        if printCode:
+            for lineNumber, line in enumerate(code.splitlines()):
+                print(f"L{lineNumber + 1}\t{line}")
 
         shader = glCreateShader(kind)
         glShaderSource(shader, code)
@@ -21,9 +25,10 @@ class OpenGLUtils(object):
         return shader
 
     @staticmethod
-    def initializeProgram(vertexShaderCode, fragmentShaderCode):
-        vertex_shader_ref = OpenGLUtils.__compileShader(vertexShaderCode, GL_VERTEX_SHADER)
-        fragment_shader_ref = OpenGLUtils.__compileShader(fragmentShaderCode, GL_FRAGMENT_SHADER)
+    def initializeProgram(vertexShaderCode, fragmentShaderCode, printCode = False):
+
+        vertex_shader_ref = OpenGLUtils.__compileShader(vertexShaderCode, GL_VERTEX_SHADER, printCode)
+        fragment_shader_ref = OpenGLUtils.__compileShader(fragmentShaderCode, GL_FRAGMENT_SHADER, printCode)
         
         program = glCreateProgram();
         glAttachShader(program, vertex_shader_ref)

@@ -1,5 +1,6 @@
 from core.Matrix import Matrix
 from numpy.typing import NDArray
+import numpy
 
 class Object3D(object):
     """A node in the scene graph, with functions handling common usage"""
@@ -7,6 +8,7 @@ class Object3D(object):
         self.parent = None 
         self.children = []
         self.transform = Matrix.makeIdentity()
+        self.id = None
 
     def add(self, child):
         self.children.append(child)
@@ -70,6 +72,26 @@ class Object3D(object):
     def scale(self, size, useLocalCoordinates = True):
         m = Matrix.makeScale(size)
         self.applyMatrix(m, useLocalCoordinates)
+
+    def getRotationMatrix(self):
+        return numpy.array(
+            [
+                self.transform[0][0:3],
+                self.transform[1][0:3],
+                self.transform[2][0:3]
+            ]
+        )
+
+    def getDirection(self):
+        forward = numpy.array([0,0,-1])
+        return list(self.getRotationMatrix() @ forward)
+
+    def setDirection(self, direction):
+        position = self.getPosition()
+        targetPosition = [ position[0] + direction[0],
+        position[1] + direction[1],
+        position[2] + direction[2] ]
+        self.lookAt( targetPosition )
 
     def getPosition(self):
         return [

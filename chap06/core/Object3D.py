@@ -1,14 +1,15 @@
 from core.Matrix import Matrix
-from numpy.typing import NDArray
+from typing import Union
 import numpy
 
 class Object3D(object):
     """A node in the scene graph, with functions handling common usage"""
+
     def __init__(self):
         self.parent = None 
         self.children = []
         self.transform = Matrix.makeIdentity()
-        self.id = None
+        self.id: Union[str, None] = None
 
     def add(self, child):
         self.children.append(child)

@@ -3,10 +3,11 @@ from core.Uniform import Uniform
 
 from OpenGL.GL import *
 
+from abc import ABC, abstractmethod
 import os
 
 
-class Material(object):
+class Material(ABC):
     """Stores program references, uniforms and rendering settings"""
 
     def __init__(self, vertexShaderCode, fragmentShaderCode):
@@ -34,6 +35,8 @@ class Material(object):
     def shouldPrintCode(self):
         return self.__CheckIfShouldPrintCode()
 
+
+
     def addUniform(self, dataType, name, data):
         self.uniforms[name] = Uniform.fromData(dataType, data)
 
@@ -41,6 +44,7 @@ class Material(object):
         for uniformName, uniformObject in self.uniforms.items():
             uniformObject.locateUniform(self.program, uniformName)
 
+    @abstractmethod
     def updateRenderSettings(self):
         pass
 

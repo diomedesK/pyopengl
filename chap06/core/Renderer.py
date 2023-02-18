@@ -43,14 +43,16 @@ class Renderer(object):
         lightList = list(filter(self.lightFilter, sceneDescendantsList))
 
         for mesh in meshList:
+
             if not mesh.visible:
                 continue
+
             meshHandler(mesh) if meshHandler else None
 
             glUseProgram(mesh.material.program)
             glBindVertexArray(mesh.VAO)
 
-            mesh.material.uniforms["modelMatrix"].data = mesh.transform
+            mesh.material.uniforms["modelMatrix"].data = mesh.getWorldTransform()
             mesh.material.uniforms["viewMatrix"].data = camera.viewMatrix
             mesh.material.uniforms["projectionMatrix"].data = camera.projectionMatrix
 

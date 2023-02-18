@@ -95,8 +95,7 @@ class PhongMaterial(LightenedMaterial):
                 diffuse *= attenuation;
 
                 if (diffuse > 0) {
-                    vec3 viewDirection = normalize(viewPosition -
-                    pointPosition);
+                    vec3 viewDirection = normalize(viewPosition - pointPosition);
                     vec3 reflectDirection = reflect(lightDirection, pointNormal);
                     specular = max( dot(viewDirection, reflectDirection), 0.0 );
                     specular = specularStrength * pow(specular, shininess);
@@ -128,7 +127,7 @@ class PhongMaterial(LightenedMaterial):
 
         return code
 
-    def update_render_settings(self):
+    def updateRenderSettings(self):
         if self.settings["doubleSide"]:
             GL.glDisable(GL.GL_CULL_FACE)
         else:

@@ -108,7 +108,7 @@ class FlatMaterial(LightenedMaterial):
 
         return code
 
-    def update_render_settings(self):
+    def updateRenderSettings(self):
         if self.settings["doubleSide"]:
             GL.glDisable(GL.GL_CULL_FACE)
         else:

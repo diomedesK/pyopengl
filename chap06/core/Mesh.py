@@ -17,7 +17,6 @@ class Mesh(Object3D):
         #link geometry's attribute data to program stored in the material instance
         for attributeName, attributeObject in self.geometry.attributes.items():
             attributeObject.associateVariable(self.material.program, attributeName)
-        
 
         glBindVertexArray(0)
 

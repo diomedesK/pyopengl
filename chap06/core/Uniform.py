@@ -51,7 +51,6 @@ class Uniform(object):
         # print(f"Uploading {self.dataType} data for {self.variableName}")
 
         if self.variableRef == -1:
-            print(self.variableName)
             return 
 
         data = self.data

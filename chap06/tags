@@ -22,7 +22,10 @@ CylinderGeometry	geometries/CylinderGeometry.py	/^class CylinderGeometry(Cylindr
 CylindricalGeometry	geometries/CylindricalGeomtry.py	/^class CylindricalGeometry(ParametricGeometry):$/;"	c
 DIRECTIONAL	light/Light.py	/^    DIRECTIONAL = 2 $/;"	v	class:Light
 DirectionalLight	light/DirectionalLight.py	/^class DirectionalLight(Light):$/;"	c
+DirectionalLightHelper	extras/DirectionalLightHelper.py	/^class DirectionalLightHelper(GridHelper):$/;"	c
 EllipsoidGeometry	geometries/EllipsoidGemetry.py	/^class EllipsoidGeometry(ParametricGeometry):$/;"	c
+Executor	t-1-2.py	/^class Executor(Base):$/;"	c
+Executor	t-1.py	/^class Executor(Base):$/;"	c
 Executor	t1.py	/^class Executor(Base):$/;"	c
 FlatMaterial	materials/FlatMaterial.py	/^class FlatMaterial(LightenedMaterial):$/;"	c
 GL	materials/FlatMaterial.py	/^import OpenGL.GL as GL$/;"	I	nameref:module:OpenGL.GL
@@ -40,7 +43,7 @@ MOUSE_BUTTON_DOWN	core/Input.py	/^MOUSE_BUTTON_DOWN = "mouseButtonDown"$/;"	v
 MOUSE_BUTTON_UP	core/Input.py	/^MOUSE_BUTTON_UP = "mouseButtonUp"$/;"	v
 MOUSE_MOTION	core/Input.py	/^MOUSE_MOTION = "mouseMotion"$/;"	v
 MOUSE_WHEEL	core/Input.py	/^MOUSE_WHEEL = "mouseWheel"$/;"	v
-Material	core/Material.py	/^class Material(object):$/;"	c
+Material	core/Material.py	/^class Material(ABC):$/;"	c
 Matrix	core/Matrix.py	/^class Matrix:$/;"	c
 Mesh	core/Mesh.py	/^class Mesh(Object3D):$/;"	c
 MovementRig	extras/MovementRig.py	/^class MovementRig(Object3D):$/;"	c
@@ -51,6 +54,7 @@ ParametricGeometry	geometries/ParametricGeometry.py	/^class ParametricGeometry(G
 PhongMaterial	materials/PhongMaterial.py	/^class PhongMaterial(LightenedMaterial):$/;"	c
 PlaneGeometry	geometries/PlaneGeometry.py	/^class PlaneGeometry(ParametricGeometry):$/;"	c
 PointLight	light/PointLight.py	/^class PointLight(Light):$/;"	c
+PointLightHelper	extras/PointLightHelper.py	/^class PointLightHelper(Mesh):$/;"	c
 PolygonGeometry	geometries/PolygonGeometry.py	/^class PolygonGeometry(Geometry):$/;"	c
 PostProcessor	core/PostProcessor.py	/^class PostProcessor(object):$/;"	c
 PrismGeometry	geometries/PrismGeometry.py	/^class PrismGeometry(CylindricalGeometry):$/;"	c
@@ -90,8 +94,10 @@ __init__	core/Uniform.py	/^    def __init__(self, program, variableName):$/;"	m	
 __init__	effects/TemplateEffect.py	/^    def __init__(self):$/;"	m	class:TemplateEffect
 __init__	effects/TintEffect.py	/^    def __init__(self, tintColor = [1.0, 0.0, 0.0]):$/;"	m	class:TintEffect
 __init__	extras/AxesHelper.py	/^    def __init__(self, axisLength = 2, lineWidth = 2, axisColors = [ [1, 0, 0], [ 0, 1, 0 ], [0,/;"	m	class:AxesHelper
-__init__	extras/GridHelper.py	/^    def __init__(self, divisions = 10, size = 10, defaultColor = [1, 1, 1], lineWidth = 1):$/;"	m	class:GridHelper
+__init__	extras/DirectionalLightHelper.py	/^    def __init__(self, directionalLight):$/;"	m	class:DirectionalLightHelper
+__init__	extras/GridHelper.py	/^    def __init__(self, divisions = 10, size = 10, color = [1, 1, 1], lineWidth = 1):$/;"	m	class:GridHelper
 __init__	extras/MovementRig.py	/^    def __init__(self, drag = 1.0, userDefinedControls = {}):$/;"	m	class:MovementRig
+__init__	extras/PointLightHelper.py	/^    def __init__(self, pointLight, size=0.22, lineWidth=1):$/;"	m	class:PointLightHelper
 __init__	extras/TextTexture.py	/^    def __init__(self, text="Hello, world!", systemFontName="Arial", fontFileName=None, fontSize/;"	m	class:TextTexture
 __init__	geometries/BoxGeometry.py	/^    def __init__(self, width=1, height=1, depth=1):$/;"	m	class:BoxGeometry
 __init__	geometries/ConeGeometry.py	/^    def __init__(self, radius=1, height=1, radialSegments=32, heightSegments=4, closed=True):$/;"	m	class:ConeGeometry
@@ -105,7 +111,7 @@ __init__	geometries/PolygonGeometry.py	/^    def __init__(self, sides=3, radius=
 __init__	geometries/PrismGeometry.py	/^    def __init__(self, radius=1, height=1, sides=6, heightSegments=4, closed=True):$/;"	m	class:PrismGeometry
 __init__	geometries/PyramidGeometry.py	/^    def __init__(self, radius=1, height=1, sides=4, heightSegments=4, closed=True):$/;"	m	class:PyramidGeometry
 __init__	geometries/RectangleGeometry.py	/^    def __init__(self, width=1, height=1, position=[0, 0], alignment=[0.5, 0.5]):$/;"	m	class:RectangleGeometry
-__init__	geometries/SphereGeometry.py	/^    def __init__(self, radius=1, radiusSegments=32, heightSements=16):$/;"	m	class:SphereGeometry
+__init__	geometries/SphereGeometry.py	/^    def __init__(self, radius: Union[int, float], radiusSegments=32, heightSements=16):$/;"	m	class:SphereGeometry
 __init__	light/AmbientLight.py	/^    def __init__(self, color = [1, 1, 1]):$/;"	m	class:AmbientLight
 __init__	light/DirectionalLight.py	/^    def __init__(self, color=(1, 1, 1), direction=(0, -1, 0)):$/;"	m	class:DirectionalLight
 __init__	light/Light.py	/^    def __init__(self, lightType = 0):$/;"	m	class:Light
@@ -119,6 +125,8 @@ __init__	materials/PhongMaterial.py	/^    def __init__(self, texture = None, pro
 __init__	materials/SpriteMaterial.py	/^    def __init__(self, texture, properties={}):$/;"	m	class:SpriteMaterial
 __init__	materials/SurfaceMaterial.py	/^    def __init__(self, properties={}):$/;"	m	class:SurfaceMaterial
 __init__	materials/TextureMaterial.py	/^    def __init__(self, texture, properties={}):$/;"	m	class:TextureMaterial
+__init__	t-1-2.py	/^    def __init__(self, *args, **kwargs):$/;"	m	class:Executor
+__init__	t-1.py	/^    def __init__(self, *args, **kwargs):$/;"	m	class:Executor
 __init__	t1.py	/^    def __init__(self, *args, **kwargs):$/;"	m	class:Executor
 add	core/Object3D.py	/^    def add(self, child):$/;"	m	class:Object3D
 add	extras/MovementRig.py	/^    def add(self, child):$/;"	m	class:MovementRig
@@ -147,6 +155,8 @@ getRotationMatrix	core/Object3D.py	/^    def getRotationMatrix(self):$/;"	m	clas
 getWorldPosition	core/Object3D.py	/^    def getWorldPosition(self):$/;"	m	class:Object3D
 getWorldTransform	core/Object3D.py	/^    def getWorldTransform(self): #not equal to a "getGlobalTransform"$/;"	m	class:Object3D
 initialize	core/Base.py	/^    def initialize(self):$/;"	m	class:Base
+initialize	t-1-2.py	/^    def initialize(self):$/;"	m	class:Executor
+initialize	t-1.py	/^    def initialize(self):$/;"	m	class:Executor
 initialize	t1.py	/^    def initialize(self):$/;"	m	class:Executor
 initializeProgram	core/OpenGLUtils.py	/^    def initializeProgram(vertexShaderCode, fragmentShaderCode, printCode = False):$/;"	m	class:OpenGLUtils
 isKeyDown	core/Input.py	/^    def isKeyDown(self, key_name):$/;"	m	class:Input
@@ -190,17 +200,19 @@ translate	core/Object3D.py	/^    def translate(self, x, y, z, useLocalCoordinate
 update	core/Base.py	/^    def update(self):$/;"	m	class:Base
 update	core/Input.py	/^    def update(self):$/;"	m	class:Input
 update	extras/MovementRig.py	/^    def update(self, inputObject, moveAmount, ignoreMouseEvents = False, ignoreKeyboardEvents = /;"	m	class:MovementRig
+update	t-1-2.py	/^    def update(self):$/;"	m	class:Executor
+update	t-1.py	/^    def update(self):$/;"	m	class:Executor
 update	t1.py	/^    def update(self):$/;"	m	class:Executor
 updateRenderSettings	core/Material.py	/^    def updateRenderSettings(self):$/;"	m	class:Material
 updateRenderSettings	materials/BasicMaterial.py	/^    def updateRenderSettings(self):$/;"	m	class:BasicMaterial
+updateRenderSettings	materials/FlatMaterial.py	/^    def updateRenderSettings(self):$/;"	m	class:FlatMaterial
+updateRenderSettings	materials/LambertMaterial.py	/^    def updateRenderSettings(self):$/;"	m	class:LambertMaterial
 updateRenderSettings	materials/LineMaterial.py	/^    def updateRenderSettings(self):$/;"	m	class:LineMaterial
+updateRenderSettings	materials/PhongMaterial.py	/^    def updateRenderSettings(self):$/;"	m	class:PhongMaterial
 updateRenderSettings	materials/SpriteMaterial.py	/^    def updateRenderSettings(self):$/;"	m	class:SpriteMaterial
 updateRenderSettings	materials/SurfaceMaterial.py	/^    def updateRenderSettings(self):$/;"	m	class:SurfaceMaterial
 updateRenderSettings	materials/TextureMaterial.py	/^    def updateRenderSettings(self):$/;"	m	class:TextureMaterial
 updateViewMatrix	core/Camera.py	/^    def updateViewMatrix(self):$/;"	m	class:Camera
-update_render_settings	materials/FlatMaterial.py	/^    def update_render_settings(self):$/;"	m	class:FlatMaterial
-update_render_settings	materials/LambertMaterial.py	/^    def update_render_settings(self):$/;"	m	class:LambertMaterial
-update_render_settings	materials/PhongMaterial.py	/^    def update_render_settings(self):$/;"	m	class:PhongMaterial
 uploadData	core/Attribute.py	/^    def uploadData(self):$/;"	m	class:Attribute
 uploadData	core/Texture.py	/^    def uploadData(self):$/;"	m	class:Texture
 uploadData	core/Uniform.py	/^    def uploadData(self):$/;"	m	class:Uniform

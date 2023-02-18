@@ -9,7 +9,7 @@ from math import radians
 
 class GridHelper(Mesh):
     """ Grid-plane shape for helping in 3D visualization"""
-    def __init__(self, divisions = 10, size = 10, defaultColor = [1, 1, 1], lineWidth = 1):
+    def __init__(self, divisions = 10, size = 10, color = [1, 1, 1], lineWidth = 1):
 
         unitSize = size / divisions
 
@@ -24,15 +24,15 @@ class GridHelper(Mesh):
             positionData.append([x, -size/2, 0 ])
             positionData.append([x, +size/2, 0 ])
 
-            colorData.append(defaultColor)
-            colorData.append(defaultColor)
+            colorData.append(color)
+            colorData.append(color)
 
         for y in values:
             positionData.append([-size/2, y, 0 ])
             positionData.append([+size/2, y, 0 ])
 
-            colorData.append(defaultColor)
-            colorData.append(defaultColor)
+            colorData.append(color)
+            colorData.append(color)
 
         geo = Geometry()
         geo.addAttribute("vec3", "vertexPosition", positionData)
@@ -45,6 +45,7 @@ class GridHelper(Mesh):
         mat.addUniform("bool", "useBaseColorOnly", False)
         mat.addUniform("bool", "useVertexColors", True)
         mat.locateUniforms()
+
 
         super().__init__(geo, mat)
         

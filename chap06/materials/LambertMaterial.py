@@ -4,7 +4,7 @@ import OpenGL.GL as GL
 class LambertMaterial(LightenedMaterial):
     """docstring for FlatMaterial"""
 
-    def __init__(self, texture = None, properties = {}, numberOfLights = 1):
+    def __init__(self, texture = None, bumpTexture = None, properties = {}, numberOfLights = 1):
         super().__init__(numberOfLights=numberOfLights)
 
         if texture is None:
@@ -12,6 +12,14 @@ class LambertMaterial(LightenedMaterial):
         else:
             self.addUniform("bool", "useTexture", True)
             self.addUniform("sampler2D", "texture", [texture.textureReference, 1])
+
+        if bumpTexture is None:
+            self.addUniform("bool", "useBumpTexture", False)
+        else:
+            self.addUniform("bool", "useBumpTexture", True)
+            self.addUniform("sampler2D", "bumpTexture", [ bumpTexture.textureReference, 2 ])
+            self.addUniform("float", "bumpStrength", 1.0)
+
 
         self.locateUniforms()
 
@@ -92,6 +100,11 @@ class LambertMaterial(LightenedMaterial):
         uniform vec3 baseColor;
         uniform bool useTexture;
         uniform sampler2D texture;
+
+        uniform bool useBumpTexture;
+        uniform sampler2D bumpTexture;
+        uniform float bumpStrength;
+
         in vec3 position;
         in vec3 normal;
         in vec2 UV;
@@ -103,6 +116,10 @@ class LambertMaterial(LightenedMaterial):
                 color *= texture2D(texture, UV);
 
             vec3 total = vec3(0, 0, 0);
+
+            if (useBumpTexture)
+                total += bumpStrength * vec3(texture2D(bumpTexture, UV));
+
             """ + self.generateGLSLLightCalculations(destName="total") + """
 
             color *= vec4(total, 1);

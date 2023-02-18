@@ -3,9 +3,9 @@ from core.Mesh import Mesh
 from light.Light import Light
 from OpenGL.GL import *
 
-import numpy, pygame
+from light.AmbientLight import AmbientLight
 
-debug = True
+import numpy, pygame
 
 class Renderer(object):
     """docstring for Renderer"""
@@ -57,8 +57,15 @@ class Renderer(object):
             mesh.material.uniforms["projectionMatrix"].data = camera.projectionMatrix
 
             if "light0" in mesh.material.uniforms.keys():
-                for lightNumber, lightInstance in enumerate(lightList):
+
+                lightNumber = 0
+                for lightInstance in lightList:
                     mesh.material.uniforms[f"light{lightNumber}"].data = lightInstance
+                    lightNumber += 1
+
+                while lightNumber < mesh.material.numberOfLights:
+                    mesh.material.uniforms[f"light{lightNumber}"].data = AmbientLight([0.0 for n in range(3)])
+                    lightNumber += 1
 
             if "viewPosition" in mesh.material.uniforms.keys():
                 mesh.material.uniforms["viewPosition"].data = camera.getWorldPosition()

@@ -26,6 +26,8 @@ DirectionalLightHelper	extras/DirectionalLightHelper.py	/^class DirectionalLight
 EllipsoidGeometry	geometries/EllipsoidGemetry.py	/^class EllipsoidGeometry(ParametricGeometry):$/;"	c
 Executor	t-1-2.py	/^class Executor(Base):$/;"	c
 Executor	t-1.py	/^class Executor(Base):$/;"	c
+Executor	t-2-1.py	/^class Executor(Base):$/;"	c
+Executor	t-2-2.py	/^class Executor(Base):$/;"	c
 Executor	t1.py	/^class Executor(Base):$/;"	c
 FlatMaterial	materials/FlatMaterial.py	/^class FlatMaterial(LightenedMaterial):$/;"	c
 GL	materials/FlatMaterial.py	/^import OpenGL.GL as GL$/;"	I	nameref:module:OpenGL.GL
@@ -118,7 +120,7 @@ __init__	light/Light.py	/^    def __init__(self, lightType = 0):$/;"	m	class:Lig
 __init__	light/PointLight.py	/^    def __init__(self,$/;"	m	class:PointLight
 __init__	materials/BasicMaterial.py	/^    def __init__(self):$/;"	m	class:BasicMaterial
 __init__	materials/FlatMaterial.py	/^    def __init__(self, texture = None, properties = {}, numberOfLights = 1):$/;"	m	class:FlatMaterial
-__init__	materials/LambertMaterial.py	/^    def __init__(self, texture = None, properties = {}, numberOfLights = 1):$/;"	m	class:LambertMaterial
+__init__	materials/LambertMaterial.py	/^    def __init__(self, texture = None, bumpTexture = None, properties = {}, numberOfLights = 1):$/;"	m	class:LambertMaterial
 __init__	materials/LightenedMaterial.py	/^    def __init__(self, numberOfLights = 4):$/;"	m	class:LightenedMaterial
 __init__	materials/LineMaterial.py	/^    def __init__(self, properties={}):$/;"	m	class:LineMaterial
 __init__	materials/PhongMaterial.py	/^    def __init__(self, texture = None, properties = {}, numberOfLights = 1):$/;"	m	class:PhongMaterial
@@ -127,6 +129,8 @@ __init__	materials/SurfaceMaterial.py	/^    def __init__(self, properties={}):$/
 __init__	materials/TextureMaterial.py	/^    def __init__(self, texture, properties={}):$/;"	m	class:TextureMaterial
 __init__	t-1-2.py	/^    def __init__(self, *args, **kwargs):$/;"	m	class:Executor
 __init__	t-1.py	/^    def __init__(self, *args, **kwargs):$/;"	m	class:Executor
+__init__	t-2-1.py	/^    def __init__(self, *args, **kwargs):$/;"	m	class:Executor
+__init__	t-2-2.py	/^    def __init__(self, *args, **kwargs):$/;"	m	class:Executor
 __init__	t1.py	/^    def __init__(self, *args, **kwargs):$/;"	m	class:Executor
 add	core/Object3D.py	/^    def add(self, child):$/;"	m	class:Object3D
 add	extras/MovementRig.py	/^    def add(self, child):$/;"	m	class:MovementRig
@@ -140,7 +144,6 @@ associateVariable	core/Attribute.py	/^    def associateVariable(self, program, v
 calculateNormal	geometries/ParametricGeometry.py	/^        def calculateNormal(p0, p1, p2):$/;"	f	member:ParametricGeometry.__init__	file:
 countVertices	core/Geometry.py	/^    def countVertices(self):$/;"	m	class:Geometry
 countVertices	geometries/Geometry.py	/^    def countVertices(self):$/;"	m	class:Geometry
-debug	core/Renderer.py	/^debug = True$/;"	v
 fragmentShaderCode	materials/FlatMaterial.py	/^    def fragmentShaderCode(self):$/;"	m	class:FlatMaterial
 fragmentShaderCode	materials/LambertMaterial.py	/^    def fragmentShaderCode(self):$/;"	m	class:LambertMaterial
 fragmentShaderCode	materials/LightenedMaterial.py	/^    def fragmentShaderCode(self):$/;"	m	class:LightenedMaterial
@@ -157,6 +160,8 @@ getWorldTransform	core/Object3D.py	/^    def getWorldTransform(self): #not equal
 initialize	core/Base.py	/^    def initialize(self):$/;"	m	class:Base
 initialize	t-1-2.py	/^    def initialize(self):$/;"	m	class:Executor
 initialize	t-1.py	/^    def initialize(self):$/;"	m	class:Executor
+initialize	t-2-1.py	/^    def initialize(self):$/;"	m	class:Executor
+initialize	t-2-2.py	/^    def initialize(self):$/;"	m	class:Executor
 initialize	t1.py	/^    def initialize(self):$/;"	m	class:Executor
 initializeProgram	core/OpenGLUtils.py	/^    def initializeProgram(vertexShaderCode, fragmentShaderCode, printCode = False):$/;"	m	class:OpenGLUtils
 isKeyDown	core/Input.py	/^    def isKeyDown(self, key_name):$/;"	m	class:Input
@@ -202,6 +207,8 @@ update	core/Input.py	/^    def update(self):$/;"	m	class:Input
 update	extras/MovementRig.py	/^    def update(self, inputObject, moveAmount, ignoreMouseEvents = False, ignoreKeyboardEvents = /;"	m	class:MovementRig
 update	t-1-2.py	/^    def update(self):$/;"	m	class:Executor
 update	t-1.py	/^    def update(self):$/;"	m	class:Executor
+update	t-2-1.py	/^    def update(self):$/;"	m	class:Executor
+update	t-2-2.py	/^    def update(self):$/;"	m	class:Executor
 update	t1.py	/^    def update(self):$/;"	m	class:Executor
 updateRenderSettings	core/Material.py	/^    def updateRenderSettings(self):$/;"	m	class:Material
 updateRenderSettings	materials/BasicMaterial.py	/^    def updateRenderSettings(self):$/;"	m	class:BasicMaterial

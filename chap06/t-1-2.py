@@ -6,6 +6,7 @@ from core.Mesh import Mesh
 from core.Texture import Texture
 
 from geometries.SphereGeometry import SphereGeometry
+from geometries.RectangleGeometry import RectangleGeometry
 
 from materials.FlatMaterial import FlatMaterial
 from materials.LambertMaterial import LambertMaterial
@@ -40,7 +41,7 @@ class Executor(Base):
         self.rig.setPosition([0, 2, 8])
         self.camera.setPosition([0, 0, 0])
         
-        self.sphereObjects = []
+        self.customObjects = []
 
         self.ambientLight = AmbientLight(color=[ 0.1 for n in range(3) ])
         self.directionalLight = DirectionalLight(color=[0.8, 0.8, 0.8], direction=[-1, -1, -2])
@@ -60,35 +61,47 @@ class Executor(Base):
         ## SET-UP SPHERES
         sphereGeometry = SphereGeometry(1)
 
-        sphereObjectFlat = Mesh(sphereGeometry, flatMaterial)
-        sphereObjectFlat.setPosition([-2.2, 1.0, 0])
+        customObjectFlat = Mesh(sphereGeometry, flatMaterial)
+        customObjectFlat.setPosition([-2.2, 1.0, 0])
 
-        sphereObjectLambert = Mesh(sphereGeometry, lambertMaterial)
-        sphereObjectLambert.setPosition([0, 1.0, 0])
-        sphereObjectLambert.material.addUniform("vec3", "baseColor", [ 1.0, 1.0, 1.0 ])
+        customObjectLambert = Mesh(sphereGeometry, lambertMaterial)
+        customObjectLambert.setPosition([0, 1.0, -2])
+        customObjectLambert.material.addUniform("vec3", "baseColor", [ 1.0, 1.0, 1.0 ])
 
-        sphereObjectPhong = Mesh(sphereGeometry, phongMaterial)
-        sphereObjectPhong.setPosition([2.2, 1.0, 0])
-        sphereObjectPhong.material.addUniform("vec3", "baseColor", [ 0.5, 0.5, 0.5 ])
+        customObjectPhong = Mesh(sphereGeometry, phongMaterial)
+        customObjectPhong.setPosition([2.2, 1.0, 0])
+        customObjectPhong.material.addUniform("vec3", "baseColor", [ 0.5, 0.5, 0.5 ])
 
-        self.sphereObjects.extend([
-            sphereObjectFlat, 
-            sphereObjectLambert,
-            sphereObjectPhong
+        brickGeometry = RectangleGeometry(width=2, height = 2)
+        bumpMaterial = LambertMaterial( 
+                                       numberOfLights=4,
+                                       texture = Texture("./images/brick-color.png"),
+                                       bumpTexture=Texture("./images/brick-bump.png")
+                                       )
+        customObjectBrick = Mesh(brickGeometry, bumpMaterial)
+        customObjectBrick.setPosition([0.0, 1.0, 0])
+        customObjectBrick.material.addUniform("vec3", "baseColor", [ 1.0 for n in range(3) ])
+        customObjectBrick.id = "brick"
+
+        self.customObjects.extend([
+            customObjectFlat, 
+            customObjectLambert,
+            customObjectPhong,
+            customObjectBrick
             ])
 
-        for sphereObject in self.sphereObjects:
-            if not "baseColor" in sphereObject.material.uniforms.keys():
-                sphereObject.material.addUniform("vec3", "baseColor", [1.0, 1.0, 1.0])
+        for customObject in self.customObjects:
+            if not "baseColor" in customObject.material.uniforms.keys():
+                customObject.material.addUniform("vec3", "baseColor", [1.0, 1.0, 1.0])
 
-            sphereObject.material.locateUniforms()
-            self.scene.add(sphereObject)
+            customObject.material.locateUniforms()
+            self.scene.add(customObject)
         
         ## ADD OBJECTS TO SCENE
         self.gridObject = GridHelper()
         self.gridObject.rotateX(math.radians(90))
 
-        self.directionalLightHelper = DirectionalLightHelper(self.pointLight1)
+        self.directionalLightHelper = DirectionalLightHelper(self.directionalLight)
         self.directionalLight.add(self.directionalLightHelper)
         self.directionalLight.setPosition([2, 5, 0])
 
@@ -108,8 +121,11 @@ class Executor(Base):
         self.rig.update(self.input, self.deltaTime * 2)
         self.renderer.render(self.scene, self.camera)
 
-        for sphereObject in self.sphereObjects:
-            sphereObject.rotateY(self.deltaTime)
+        for customObject in self.customObjects:
+            if customObject.id == "brick":
+                continue
+
+            customObject.rotateY(self.deltaTime)
 
         self.directionalLight.setDirection( [ -1, math.sin(0.7*self. timer), -2] )
         self.pointLight1.translate(math.sin(self.timer + 1.5) /6, 0, 0)

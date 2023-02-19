@@ -17,6 +17,7 @@ Base	core/Base.py	/^class Base(object):$/;"	c
 BasicMaterial	materials/BasicMaterial.py	/^class BasicMaterial(Material):$/;"	c
 BoxGeometry	geometries/BoxGeometry.py	/^class BoxGeometry(Geometry):$/;"	c
 Camera	core/Camera.py	/^class Camera(Object3D):$/;"	c
+ClassName	t-4-1.py	/^class ClassName(object):$/;"	c
 ConeGeometry	geometries/ConeGeometry.py	/^class ConeGeometry(CylindricalGeometry):$/;"	c
 CylinderGeometry	geometries/CylinderGeometry.py	/^class CylinderGeometry(CylindricalGeometry):$/;"	c
 CylindricalGeometry	geometries/CylindricalGeomtry.py	/^class CylindricalGeometry(ParametricGeometry):$/;"	c
@@ -72,6 +73,7 @@ SphereGeometry	geometries/SphereGeometry.py	/^class SphereGeometry(EllipsoidGeom
 SpriteMaterial	materials/SpriteMaterial.py	/^class SpriteMaterial(Material):$/;"	c
 SurfaceMaterial	materials/SurfaceMaterial.py	/^class SurfaceMaterial(BasicMaterial):$/;"	c
 TemplateEffect	effects/TemplateEffect.py	/^class TemplateEffect(Material):$/;"	c
+Tester	t-ester.py	/^class Tester(object):$/;"	c
 TextTexture	extras/TextTexture.py	/^class TextTexture(Texture):$/;"	c
 Texture	core/Texture.py	/^class Texture(object):$/;"	c
 TextureMaterial	materials/TextureMaterial.py	/^class TextureMaterial(Material):$/;"	c
@@ -131,6 +133,8 @@ __init__	t-1-2.py	/^    def __init__(self, *args, **kwargs):$/;"	m	class:Executo
 __init__	t-1.py	/^    def __init__(self, *args, **kwargs):$/;"	m	class:Executor
 __init__	t-2-1.py	/^    def __init__(self, *args, **kwargs):$/;"	m	class:Executor
 __init__	t-2-2.py	/^    def __init__(self, *args, **kwargs):$/;"	m	class:Executor
+__init__	t-4-1.py	/^    def __init__(self, arg):$/;"	m	class:ClassName
+__init__	t-ester.py	/^    def __init__(self):$/;"	m	class:Tester
 __init__	t1.py	/^    def __init__(self, *args, **kwargs):$/;"	m	class:Executor
 add	core/Object3D.py	/^    def add(self, child):$/;"	m	class:Object3D
 add	extras/MovementRig.py	/^    def add(self, child):$/;"	m	class:MovementRig
@@ -167,9 +171,11 @@ initializeProgram	core/OpenGLUtils.py	/^    def initializeProgram(vertexShaderCo
 isKeyDown	core/Input.py	/^    def isKeyDown(self, key_name):$/;"	m	class:Input
 isKeyPressed	core/Input.py	/^    def isKeyPressed(self, key_name):$/;"	m	class:Input
 isKeyUp	core/Input.py	/^    def isKeyUp(self, key_name):$/;"	m	class:Input
+lightHandler	core/Uniform.py	/^        def lightHandler(data: Light):$/;"	f	member:Uniform.uploadData	file:
 loadImage	core/Texture.py	/^    def loadImage(self, path):$/;"	m	class:Texture
 locateUniform	core/Uniform.py	/^    def locateUniform(self, program, variableName):$/;"	m	class:Uniform
 locateUniforms	core/Material.py	/^    def locateUniforms(self):$/;"	m	class:Material
+logger	core/Uniform.py	/^logger = logging.getLogger(__name__)$/;"	v
 lookAt	core/Object3D.py	/^    def lookAt(self, targetPosition):$/;"	m	class:Object3D
 makeIdentity	core/Matrix.py	/^    def makeIdentity():$/;"	m	class:Matrix
 makeLookAt	core/Matrix.py	/^    def makeLookAt( objectPosition, targetPosition ):$/;"	m	class:Matrix
@@ -191,6 +197,8 @@ rotateX	core/Object3D.py	/^    def rotateX(self, angle, useLocalCoordinates = Tr
 rotateY	core/Object3D.py	/^    def rotateY(self, angle, useLocalCoordinates = True):$/;"	m	class:Object3D
 rotateZ	core/Object3D.py	/^    def rotateZ(self, angle, useLocalCoordinates = True):$/;"	m	class:Object3D
 run	core/Base.py	/^    def run(self):$/;"	m	class:Base
+run	t-ester.py	/^    def run(self):$/;"	m	class:Tester
+sampler2DHandler	core/Uniform.py	/^        def sampler2DHandler(data: list):$/;"	f	member:Uniform.uploadData	file:
 scale	core/Object3D.py	/^    def scale(self, size, useLocalCoordinates = True):$/;"	m	class:Object3D
 setData	core/Uniform.py	/^    def setData(self, dataType, data):$/;"	m	class:Uniform
 setDirection	core/Object3D.py	/^    def setDirection(self, direction):$/;"	m	class:Object3D

@@ -17,11 +17,11 @@ Base	core/Base.py	/^class Base(object):$/;"	c
 BasicMaterial	materials/BasicMaterial.py	/^class BasicMaterial(Material):$/;"	c
 BoxGeometry	geometries/BoxGeometry.py	/^class BoxGeometry(Geometry):$/;"	c
 Camera	core/Camera.py	/^class Camera(Object3D):$/;"	c
-ClassName	t-4-1.py	/^class ClassName(object):$/;"	c
 ConeGeometry	geometries/ConeGeometry.py	/^class ConeGeometry(CylindricalGeometry):$/;"	c
 CylinderGeometry	geometries/CylinderGeometry.py	/^class CylinderGeometry(CylindricalGeometry):$/;"	c
 CylindricalGeometry	geometries/CylindricalGeomtry.py	/^class CylindricalGeometry(ParametricGeometry):$/;"	c
 DIRECTIONAL	light/Light.py	/^    DIRECTIONAL = 2 $/;"	v	class:Light
+DepthMaterial	materials/DepthMaterial.py	/^class DepthMaterial(Material):$/;"	c
 DirectionalLight	light/DirectionalLight.py	/^class DirectionalLight(Light):$/;"	c
 DirectionalLightHelper	extras/DirectionalLightHelper.py	/^class DirectionalLightHelper(GridHelper):$/;"	c
 EllipsoidGeometry	geometries/EllipsoidGemetry.py	/^class EllipsoidGeometry(ParametricGeometry):$/;"	c
@@ -29,6 +29,7 @@ Executor	t-1-2.py	/^class Executor(Base):$/;"	c
 Executor	t-1.py	/^class Executor(Base):$/;"	c
 Executor	t-2-1.py	/^class Executor(Base):$/;"	c
 Executor	t-2-2.py	/^class Executor(Base):$/;"	c
+Executor	t-4-1.py	/^class Executor(Base):$/;"	c
 Executor	t1.py	/^class Executor(Base):$/;"	c
 FlatMaterial	materials/FlatMaterial.py	/^class FlatMaterial(LightenedMaterial):$/;"	c
 GL	materials/FlatMaterial.py	/^import OpenGL.GL as GL$/;"	I	nameref:module:OpenGL.GL
@@ -69,6 +70,7 @@ S	geometries/CylindricalGeomtry.py	/^        def S(u, v):$/;"	f	member:Cylindric
 S	geometries/EllipsoidGemetry.py	/^        def S(u, v):$/;"	f	member:EllipsoidGeometry.__init__	file:
 S	geometries/PlaneGeometry.py	/^        def S(u, v):$/;"	f	member:PlaneGeometry.__init__	file:
 Scene	core/Scene.py	/^class Scene(Object3D):$/;"	c
+Shadow	light/Shadow.py	/^class Shadow(object):$/;"	c
 SphereGeometry	geometries/SphereGeometry.py	/^class SphereGeometry(EllipsoidGeometry):$/;"	c
 SpriteMaterial	materials/SpriteMaterial.py	/^class SpriteMaterial(Material):$/;"	c
 SurfaceMaterial	materials/SurfaceMaterial.py	/^class SurfaceMaterial(BasicMaterial):$/;"	c
@@ -120,12 +122,14 @@ __init__	light/AmbientLight.py	/^    def __init__(self, color = [1, 1, 1]):$/;"	
 __init__	light/DirectionalLight.py	/^    def __init__(self, color=(1, 1, 1), direction=(0, -1, 0)):$/;"	m	class:DirectionalLight
 __init__	light/Light.py	/^    def __init__(self, lightType = 0):$/;"	m	class:Light
 __init__	light/PointLight.py	/^    def __init__(self,$/;"	m	class:PointLight
+__init__	light/Shadow.py	/^    def __init__(self, lightSource, strength=0.5, $/;"	m	class:Shadow
 __init__	materials/BasicMaterial.py	/^    def __init__(self):$/;"	m	class:BasicMaterial
+__init__	materials/DepthMaterial.py	/^    def __init__(self):$/;"	m	class:DepthMaterial
 __init__	materials/FlatMaterial.py	/^    def __init__(self, texture = None, properties = {}, numberOfLights = 1):$/;"	m	class:FlatMaterial
 __init__	materials/LambertMaterial.py	/^    def __init__(self, texture = None, bumpTexture = None, properties = {}, numberOfLights = 1):$/;"	m	class:LambertMaterial
 __init__	materials/LightenedMaterial.py	/^    def __init__(self, numberOfLights = 4):$/;"	m	class:LightenedMaterial
 __init__	materials/LineMaterial.py	/^    def __init__(self, properties={}):$/;"	m	class:LineMaterial
-__init__	materials/PhongMaterial.py	/^    def __init__(self, texture = None, properties = {}, numberOfLights = 1):$/;"	m	class:PhongMaterial
+__init__	materials/PhongMaterial.py	/^    def __init__(self,$/;"	m	class:PhongMaterial
 __init__	materials/SpriteMaterial.py	/^    def __init__(self, texture, properties={}):$/;"	m	class:SpriteMaterial
 __init__	materials/SurfaceMaterial.py	/^    def __init__(self, properties={}):$/;"	m	class:SurfaceMaterial
 __init__	materials/TextureMaterial.py	/^    def __init__(self, texture, properties={}):$/;"	m	class:TextureMaterial
@@ -133,7 +137,7 @@ __init__	t-1-2.py	/^    def __init__(self, *args, **kwargs):$/;"	m	class:Executo
 __init__	t-1.py	/^    def __init__(self, *args, **kwargs):$/;"	m	class:Executor
 __init__	t-2-1.py	/^    def __init__(self, *args, **kwargs):$/;"	m	class:Executor
 __init__	t-2-2.py	/^    def __init__(self, *args, **kwargs):$/;"	m	class:Executor
-__init__	t-4-1.py	/^    def __init__(self, arg):$/;"	m	class:ClassName
+__init__	t-4-1.py	/^    def __init__(self, *args, **kwargs):$/;"	m	class:Executor
 __init__	t-ester.py	/^    def __init__(self):$/;"	m	class:Tester
 __init__	t1.py	/^    def __init__(self, *args, **kwargs):$/;"	m	class:Executor
 add	core/Object3D.py	/^    def add(self, child):$/;"	m	class:Object3D
@@ -148,6 +152,7 @@ associateVariable	core/Attribute.py	/^    def associateVariable(self, program, v
 calculateNormal	geometries/ParametricGeometry.py	/^        def calculateNormal(p0, p1, p2):$/;"	f	member:ParametricGeometry.__init__	file:
 countVertices	core/Geometry.py	/^    def countVertices(self):$/;"	m	class:Geometry
 countVertices	geometries/Geometry.py	/^    def countVertices(self):$/;"	m	class:Geometry
+enableShadows	core/Renderer.py	/^    def enableShadows(self, lightSource, strength = 0.5, resolution = [512, 512]):$/;"	m	class:Renderer
 fragmentShaderCode	materials/FlatMaterial.py	/^    def fragmentShaderCode(self):$/;"	m	class:FlatMaterial
 fragmentShaderCode	materials/LambertMaterial.py	/^    def fragmentShaderCode(self):$/;"	m	class:LambertMaterial
 fragmentShaderCode	materials/LightenedMaterial.py	/^    def fragmentShaderCode(self):$/;"	m	class:LightenedMaterial
@@ -166,6 +171,7 @@ initialize	t-1-2.py	/^    def initialize(self):$/;"	m	class:Executor
 initialize	t-1.py	/^    def initialize(self):$/;"	m	class:Executor
 initialize	t-2-1.py	/^    def initialize(self):$/;"	m	class:Executor
 initialize	t-2-2.py	/^    def initialize(self):$/;"	m	class:Executor
+initialize	t-4-1.py	/^    def initialize(self):$/;"	m	class:Executor
 initialize	t1.py	/^    def initialize(self):$/;"	m	class:Executor
 initializeProgram	core/OpenGLUtils.py	/^    def initializeProgram(vertexShaderCode, fragmentShaderCode, printCode = False):$/;"	m	class:OpenGLUtils
 isKeyDown	core/Input.py	/^    def isKeyDown(self, key_name):$/;"	m	class:Input
@@ -208,6 +214,7 @@ setPerspective	core/Camera.py	/^    def setPerspective(self, angleOfView=60, asp
 setPosition	core/Object3D.py	/^    def setPosition(self, position):$/;"	m	class:Object3D
 setProperties	core/Material.py	/^    def setProperties(self, properties):$/;"	m	class:Material
 setProperties	core/Texture.py	/^    def setProperties(self, properties):$/;"	m	class:Texture
+shadowHandler	core/Uniform.py	/^        def shadowHandler(data):$/;"	f	member:Uniform.uploadData	file:
 shouldPrintCode	core/Material.py	/^    def shouldPrintCode(self):$/;"	m	class:Material
 translate	core/Object3D.py	/^    def translate(self, x, y, z, useLocalCoordinates = True):$/;"	m	class:Object3D
 update	core/Base.py	/^    def update(self):$/;"	m	class:Base
@@ -217,9 +224,12 @@ update	t-1-2.py	/^    def update(self):$/;"	m	class:Executor
 update	t-1.py	/^    def update(self):$/;"	m	class:Executor
 update	t-2-1.py	/^    def update(self):$/;"	m	class:Executor
 update	t-2-2.py	/^    def update(self):$/;"	m	class:Executor
+update	t-4-1.py	/^    def update(self):$/;"	m	class:Executor
 update	t1.py	/^    def update(self):$/;"	m	class:Executor
+updateInternal	light/Shadow.py	/^    def updateInternal(self):$/;"	m	class:Shadow
 updateRenderSettings	core/Material.py	/^    def updateRenderSettings(self):$/;"	m	class:Material
 updateRenderSettings	materials/BasicMaterial.py	/^    def updateRenderSettings(self):$/;"	m	class:BasicMaterial
+updateRenderSettings	materials/DepthMaterial.py	/^    def updateRenderSettings(self):$/;"	m	class:DepthMaterial
 updateRenderSettings	materials/FlatMaterial.py	/^    def updateRenderSettings(self):$/;"	m	class:FlatMaterial
 updateRenderSettings	materials/LambertMaterial.py	/^    def updateRenderSettings(self):$/;"	m	class:LambertMaterial
 updateRenderSettings	materials/LineMaterial.py	/^    def updateRenderSettings(self):$/;"	m	class:LineMaterial

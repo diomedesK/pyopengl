@@ -20,12 +20,6 @@ class RenderTarget(object):
             self.texture.surface = pygame.Surface(resolution)
             self.texture.uploadData()
 
-        # generate framebuffer and bind it
-        # bind texture reference to generated framebuffer
-        # generate depth buffer and attach it to generated framebuffer (using the glRenderbuffer* functions)
-
-        # check framebuffer status; raise exception if the case
-
         self.framebufferRef = glGenFramebuffers(1)
         glBindFramebuffer(GL_FRAMEBUFFER, self.framebufferRef)
 

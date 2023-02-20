@@ -16,6 +16,9 @@ class Uniform(object):
         self.dataType: Union[str, None] = None
         self.data: Union[int, dict, list] = 0
 
+        # self.variableRef: Union[int, dict, None] = None
+        self.variableName: Union[str, None] = None
+
         self.locateUniform(program, variableName)
 
     
@@ -45,6 +48,16 @@ class Uniform(object):
                 "position":     glGetUniformLocation(program, variableName + ".position"),
                 "attenuation":  glGetUniformLocation(program, variableName + ".attenuation"),
             }
+
+        elif self.dataType == "Shadow":
+            self.variableRef = {}
+            self.variableRef["lightDirection"] = glGetUniformLocation(program, variableName + ".lightDirection")
+            self.variableRef["projectionMatrix"] = glGetUniformLocation(program, variableName + ".projectionMatrix")
+            self.variableRef["viewMatrix"] = glGetUniformLocation(program, variableName + ".viewMatrix")
+            self.variableRef["depthTexture"] = glGetUniformLocation(program, variableName + ".depthTexture")
+            self.variableRef["strength"] = glGetUniformLocation(program, variableName + ".strength")
+            self.variableRef["bias"] = glGetUniformLocation(program, variableName + ".bias")
+
         else:
             self.variableRef = glGetUniformLocation(program, variableName)
 
@@ -77,17 +90,21 @@ class Uniform(object):
             glUniform3f(self.variableRef["position"], *position)
             glUniform3f(self.variableRef["attenuation"], *data.attenuation)
 
-        acceptedDataTypes = {
-                int: [ "float" ],
-                bool: [ "bool"],
-                float: [ "float" ],
-                list: [ "vec2", "vec3", "vec4", "sampler2D" ],
-                ndarray: [ "mat4" ],
-                Light: [ "Light" ]
-                }
+        def shadowHandler(data):
+            direction = data.lightSource.getDirection()
+            glUniform3f(self.variableRef["lightDirection"], *direction[0:3])
+            glUniformMatrix4fv( self.variableRef["projectionMatrix"], 1, GL_TRUE, data.camera.projectionMatrix )
+            glUniformMatrix4fv( self.variableRef["viewMatrix"], 1, GL_TRUE, data.camera.viewMatrix )
 
-        # 'Invert' the object, so the value is now used to access the key 
-        acceptedDataTypes = { el: key for key, value in acceptedDataTypes.items() for el in value }
+            textureObjectReference = data.renderTarget.texture.textureReference
+            textureUnitReference = 15
+
+            glActiveTexture(GL_TEXTURE0 + textureUnitReference) #pyright: ignore
+            glBindTexture(GL_TEXTURE_2D, textureObjectReference)
+            
+            glUniform1i(self.variableRef["depthTexture"], textureUnitReference)
+            glUniform1f( self.variableRef["strength"], data.strength )
+            glUniform1f( self.variableRef["bias"], data.bias  )
 
         dataHandlesIndexer = {
             'int':	        [ glUniform1i, False ],
@@ -98,25 +115,23 @@ class Uniform(object):
             'vec4':	        [ glUniform4f, False ],
             'mat4':	        [ lambda data: glUniformMatrix4fv(self.variableRef, 1, GL_TRUE, data), True],
             'sampler2D':    [ sampler2DHandler, True ],
-            'Light':	    [ lightHandler, True ]
+            'Light':	    [ lightHandler, True ],
+            "Shadow":       [ shadowHandler, True ]
         }
 
         if self.dataType in dataHandlesIndexer:
             dataHandler, isWrapper = dataHandlesIndexer[self.dataType]
-            if not isinstance( self.data, acceptedDataTypes[self.dataType] ):
-                raise Exception(f"{type(self.data)} is not allowed for '{self.dataType}'")
-            else:
-                try:
-                    if isWrapper:
-                        dataHandler(self.data) 
-                    elif isinstance(self.data, list):
-                        dataHandler(self.variableRef, *self.data)
-                    else:
-                        dataHandler(self.variableRef, self.data)
+            try:
+                if isWrapper:
+                    dataHandler(self.data) 
+                elif isinstance(self.data, list):
+                    dataHandler(self.variableRef, *self.data)
+                else:
+                    dataHandler(self.variableRef, self.data)
 
-                except Exception as err:
-                    logger.exception(f"Error processing data-type {self.dataType}: {err}")
-                    raise 
+            except Exception as err:
+                logger.exception(f"Error processing data-type {self.dataType}: {err}")
+                raise 
 
         else:
             logger.warning(f"ALERT: Received unknown datatype for variable 'self.variableName': {self.dataType} ")
